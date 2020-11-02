@@ -44,6 +44,16 @@ public class QrscanPlugin implements MethodCallHandler, PluginRegistry.ActivityR
 
     @Override
     public void onMethodCall(MethodCall call, Result result) {
+        String[] permissions = CheckPermissionUtils.checkPermission(activity);
+        if (permissions.length != 0) {
+            CheckPermissionUtils.initPermission(activity);
+            String[] permission = CheckPermissionUtils.checkPermission(activity);
+            if (permission.length != 0) {
+                result.success(null);
+                return;
+            }
+        }
+        
         switch (call.method) {
             case "scan":
                 this.result = result;
